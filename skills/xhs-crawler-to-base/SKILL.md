@@ -37,7 +37,7 @@ Default to the lean page-state method. Use external crawlers only when that rout
 Use the script bundled with this skill:
 
 ```bash
-python3 skills/xhs-crawler-to-base/scripts/crawl_xhs_notes.py \
+python3 <path-to-this-skill>/scripts/crawl_xhs_notes.py \
   --output-dir xhs-crawl/<batch-name> \
   "http://xhslink.com/o/..." \
   "https://www.xiaohongshu.com/discovery/item/..."

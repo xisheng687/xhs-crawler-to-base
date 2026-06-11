@@ -108,7 +108,7 @@ def extension_from_content_type(content_type, fallback):
     return fallback
 
 
-def download_media(urls, note_dir, prefix, referer, skip):
+def download_media(urls, output_dir, note_dir, prefix, referer, skip):
     files = []
     if skip:
         return files
@@ -119,7 +119,7 @@ def download_media(urls, note_dir, prefix, referer, skip):
             ext = extension_from_content_type(content_type, fallback)
             path = note_dir / f"{prefix}-{index}{ext}"
             path.write_bytes(data)
-            files.append(str(path.resolve()))
+            files.append(str(path.relative_to(output_dir)))
             time.sleep(0.15)
         except (HTTPError, URLError, TimeoutError) as exc:
             print(f"warning: failed to download {media_url}: {exc}", file=sys.stderr)
@@ -143,8 +143,8 @@ def crawl_one(url, output_dir, skip_media):
 
     note_type = "视频" if (note.get("type") == "video" or video_urls) else ("多图" if len(image_urls) > 1 else "单图")
     media_files = []
-    media_files.extend(download_media(image_urls, note_dir, "image", final_url, skip_media))
-    media_files.extend(download_media(video_urls[:1], note_dir, "video", final_url, skip_media))
+    media_files.extend(download_media(image_urls, output_dir, note_dir, "image", final_url, skip_media))
+    media_files.extend(download_media(video_urls[:1], output_dir, note_dir, "video", final_url, skip_media))
 
     return {
         "id": note_id,

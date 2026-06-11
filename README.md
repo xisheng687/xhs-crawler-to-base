@@ -1,5 +1,70 @@
 # xhs-crawler-to-base
 
+## 中文说明
+
+这是一个面向 WorkBuddy / Codex 的轻量工作流 Skill：把小红书 / RedNote 笔记链接解析成结构化数据，下载公开页面里可见的图片或视频，并可继续交给已授权的飞书 / Lark 环境写入多维表格。
+
+它不是完整原创爬虫生态，也不内置任何私有账号、cookie、飞书 token 或 Base 地址。直接创建多维表格、上传附件等动作，需要使用者自己的飞书 / Lark 授权、CLI、API 或自动化入口。
+
+### 给客户的最简单用法
+
+1. 打开自己的 WorkBuddy 或 Codex。
+2. 把这个仓库里的 `skills/xhs-crawler-to-base` 完整提供给它，并说：`帮我安装这个 skill`。
+3. 安装后直接给一条或多条小红书链接，例如：`帮我采集这条小红书笔记，下载图片，并整理成飞书多维表格记录：<小红书链接>`。
+
+如果客户只想先测试，不接飞书，也可以说：`先只生成 records.json，不写入飞书`。
+
+### 能做什么
+
+- 接收 `xhslink.com` 或 `xiaohongshu.com` 笔记链接。
+- 解析公开页面里的 `window.__INITIAL_STATE__`。
+- 提取标题、正文、类型、互动数、作者昵称、图片 / 视频 URL。
+- 下载公开页面暴露的媒体文件。
+- 输出标准化 `records.json`。
+- 在已授权环境中，引导 agent 把记录和附件写入飞书 / Lark Base。
+
+### 本地脚本测试
+
+```bash
+python3 scripts/crawl_xhs_notes.py \
+  --output-dir ./xhs-output/batch-001 \
+  "http://xhslink.com/o/example"
+```
+
+输出示例：
+
+```text
+xhs-output/batch-001/
+├── records.json
+└── <note-id>/
+    ├── page.html
+    ├── image-1.jpg
+    └── image-2.jpg
+```
+
+记录示例：
+
+```json
+{
+  "id": "note id",
+  "title": "note title",
+  "desc": "body text",
+  "type": "多图",
+  "interaction": "点赞数: 145；收藏数: 94；评论数: 498；分享数: 62",
+  "author": "nickname",
+  "sourceUrl": "https://www.xiaohongshu.com/discovery/item/<id>",
+  "imageUrls": [],
+  "videoUrls": [],
+  "mediaFiles": []
+}
+```
+
+### 隐私提醒
+
+不要公开提交真实客户的 `records.json`、下载图片 / 视频、cookie、飞书 / Lark token、Base 链接、webhook、用户域名或本机绝对路径。
+
+## English
+
 > This project is a thin workflow wrapper, not an original crawler ecosystem.
 >
 > It stands on existing tools, public web behavior, and platform APIs. The heavy lifting belongs to the original authors and platforms. In particular:
@@ -28,6 +93,14 @@
 - Includes a reusable Codex skill that can write records into Feishu/Lark Base with attachments.
 
 ## Quick Start
+
+For WorkBuddy or Codex users:
+
+1. Open your own WorkBuddy or Codex.
+2. Provide the full `skills/xhs-crawler-to-base` folder and say: `Install this skill for me`.
+3. After installation, send a Xiaohongshu / RedNote link and ask: `Crawl this note, download the media, and prepare Feishu/Lark Base records`.
+
+For a local script test:
 
 ```bash
 python3 scripts/crawl_xhs_notes.py \

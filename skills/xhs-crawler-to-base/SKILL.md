@@ -72,7 +72,7 @@ Recommended schema:
 ]
 ```
 
-If the user provides their own Feishu/Lark webhook or automation endpoint as a default authorization path, use it when appropriate to trigger table creation or downstream notifications. For direct Base creation, record writes, and attachment uploads, use an authenticated Feishu/Lark API or CLI session.
+If the user provides their own Feishu/Lark webhook or automation endpoint as a default authorization path, use it when appropriate to trigger table creation or downstream notifications. Never ask users to put real webhooks, tokens, Base URLs, or secrets into public issues, README files, commits, or shared transcripts. Prefer an authenticated local CLI session, environment variables, or a secret manager. For direct Base creation, record writes, and attachment uploads, use an authenticated Feishu/Lark API or CLI session.
 
 ## Attachment And Gallery View
 

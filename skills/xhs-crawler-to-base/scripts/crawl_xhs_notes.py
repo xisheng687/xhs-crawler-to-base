@@ -167,6 +167,7 @@ def main():
     parser.add_argument("--output-dir", required=True, help="Directory for HTML, media, and records JSON")
     parser.add_argument("--records-name", default="records.json", help="Output JSON filename")
     parser.add_argument("--skip-media", action="store_true", help="Only parse metadata; do not download media")
+    parser.add_argument("--print-records", action="store_true", help="Print full records JSON to stdout")
     args = parser.parse_args()
 
     output_dir = Path(args.output_dir)
@@ -182,8 +183,9 @@ def main():
 
     out_path = output_dir / args.records_name
     out_path.write_text(json.dumps(records, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(json.dumps(records, ensure_ascii=False, indent=2))
-    print(f"\nWrote {out_path}", file=sys.stderr)
+    if args.print_records:
+        print(json.dumps(records, ensure_ascii=False, indent=2))
+    print(f"Wrote {out_path}", file=sys.stderr)
 
 
 if __name__ == "__main__":

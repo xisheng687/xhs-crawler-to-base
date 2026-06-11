@@ -1,0 +1,4 @@
+interface:
+  display_name: "XHS Crawler To Base"
+  short_description: "Crawl Xiaohongshu notes, download media, and prepare Feishu/Lark Base records."
+  default_prompt: "Crawl these Xiaohongshu links, download their media, and prepare a Feishu/Lark Base table."
